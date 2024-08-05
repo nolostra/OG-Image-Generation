@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import puppeteer from "puppeteer";
 import { CanvasRenderingContext2D, createCanvas, loadImage } from "canvas";
-import { cors } from "../../lib/cors";
+import { cors } from "../../../lib/cors";
+import { NextResponse } from "next/server";
 
 function wrapText(
   context: CanvasRenderingContext2D,
@@ -34,11 +35,18 @@ function wrapText(
   }
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+export const POST = async (req: Request) => {
+  let res = NextResponse.next();
+  res.headers.set("Access-Control-Allow-Credentials", "true");
+  res.headers.set("Access-Control-Allow-Origin", "*"); // Update this to your domain for production
+  res.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.headers.set(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
   function limitWords(text: string, maxWords: number) {
     const words = text.split(" ");
     if (words.length > maxWords) {
@@ -48,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const { title, content, image } = req.body;
+    const { title, content, image } = await req.json();
 
     const canvasWidth = 1200;
     const canvasHeight = 630;
@@ -151,12 +159,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       "base64"
     )}`;
 
-    res.status(200).json({ ogImageUrl });
+    return Response.json(
+      { ogImageUrl },
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
   } catch (error) {
     console.error("Error generating OG image:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return Response.json(
+      { error: "Failed to generate OG image" },
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 };
-
-// Wrap the handler with CORS middleware
-export default cors(handler);
