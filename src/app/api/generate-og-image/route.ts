@@ -36,6 +36,7 @@ function wrapText(
 }
 
 export const POST = async (req: Request) => {
+  
   let res = NextResponse.next();
   res.headers.set("Access-Control-Allow-Credentials", "true");
   res.headers.set("Access-Control-Allow-Origin", "*"); // Update this to your domain for production
