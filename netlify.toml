@@ -1,0 +1,6 @@
+[build]
+  command = "./build.sh"
+  publish = "out" # Adjust this to the directory where your build output is generated
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
