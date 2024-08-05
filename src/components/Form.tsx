@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useGenerateOgImage } from "@/hooks/useGenerateOgImage";
 import usePostStore from "@/stores/usePostStore";
 import { ChangeEvent } from "react";
