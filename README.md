@@ -36,5 +36,12 @@ The image generation process is optimized for speed by leveraging Puppeteer for 
 
 
 
+Recording for Reference
+
+https://github.com/user-attachments/assets/819dd3e8-f659-4601-9697-dd6d19642919
+
+
+
+
 
 
