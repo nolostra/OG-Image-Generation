@@ -10,7 +10,7 @@ const Form: React.FC = () => {
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      console.log("File Object:--", file); // Logs the File (Blob) object
+      console.log("File Object:", file); // Logs the File (Blob) object
 
       // Convert the Blob to a Data URL for preview
       const reader = new FileReader();
